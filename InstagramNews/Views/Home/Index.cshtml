@@ -1,0 +1,75 @@
+﻿@model InstagramNews.Models.Instagram.News
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if(Model.SessionIdSet)
+{
+    <div class="ui grid">
+        <div class="four wide column"></div>
+        <div class="eight wide center aligned column">
+            <div class="ui message" id="newStories" hidden="hidden" style="cursor: pointer">
+                <div class="header">
+                    You have <b id="newStoriesCount"></b> new stories
+                </div>
+                <p>
+                    Click this message to get it
+                </p>
+            </div>
+            <div class="ui active large inline loader" id="gridLoader" hidden="hidden"></div>
+        </div>
+        <div class="four wide column"></div>
+    </div>
+
+    <div class="ui grid" id="newsGrid">
+    </div>
+}
+else
+{
+    <div class="ui grid">
+        <div class="four wide column"></div>
+        <div class="eight wide column">
+            @if(!string.IsNullOrEmpty(Model.ValidationError))
+            {
+                <div class="ui error message">
+                    <div class="header">
+                        Error
+                    </div>
+                    <div id="errorContent">
+                        @Model.ValidationError
+                    </div>
+                </div>
+            }
+            @using(Html.BeginForm("Login", "Home", FormMethod.Post, new {@class = "ui form segment"}))
+            {
+                <div class="field">
+                    <label>Instagram Username</label>
+                    <div class="ui left labeled icon input">
+                        <input placeholder="Username" type="text" name="username">
+                        <i class="user icon"></i>
+                        <div class="ui corner label">
+                            <i class="icon asterisk"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Instagram Password</label>
+                    <div class="ui left labeled icon input">
+                        <input placeholder="Password" style="color: rgb(0, 0, 0); font-style: normal; font-weight: 500;" type="password" name="password">
+                        <i class="lock icon"></i>
+                        <div class="ui corner label">
+                            <i class="icon asterisk"></i>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" class="ui blue  button" value="Login">
+            }
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    <script src="~/Scripts/NewsScript.js"></script>
+}

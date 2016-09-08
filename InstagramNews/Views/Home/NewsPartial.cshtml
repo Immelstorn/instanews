@@ -1,0 +1,81 @@
+﻿@using InstagramNews.Models.Instagram
+@model News
+           
+@{
+    string user;
+}
+
+@if(Model != null && Model.stories != null)
+{
+  foreach (Story story in Model.stories)
+  {
+      switch (story.type)
+      {
+          case 1:
+          case 2:
+            <div class="nine column row">
+                <div class=" center aligned column">
+                    @{
+                        user = story.args.text.Substring(story.args.links[0].start, story.args.links[0].end - story.args.links[0].start);
+                    }
+                    <a href=@string.Format("http://instagram.com/{0}", user)>
+                        <img class="circular ui image" src="@story.args.profile_image" />
+                    </a><br />
+                    @story.args.text <br />
+                    <div class="time">
+                    </div>
+                    <input type="hidden" class="timestamp" value="@story.args.timestamp" />
+                </div>
+
+                @foreach (Medium item in story.args.media)
+                {
+                    <div class="column clPhoto newItem" id="@item.id">
+                        <div class="ui image">
+                            <a class="ui right corner label lblLike newItem" data-content="Like">
+                                <i class="heart empty icon"></i>
+                            </a>
+                            <a href="" class="linkPhoto">
+                                <img src="@item.image" />
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+                break;
+          case 3:
+          case 4:
+        <div class="nine column row">
+            <div class="column">
+                <a href=@string.Format("http://instagram.com/{0}", story.args.text.Substring(0, story.args.text.IndexOf(' ')))>
+                    <img class="circular ui image" src="@story.args.profile_image" />
+                </a><br />
+                @story.args.text<br />
+                <div class="time">
+                </div>
+                <input type="hidden" class="timestamp" value="@story.args.timestamp" />
+            </div>
+            @if (story.args.links.Count > 1)
+            {
+                for (int i = 1; i < story.args.links.Count; i++)
+                {
+                    <div class="column clUser newItem" id="@story.args.links[i].id">
+                        @{
+                    user = story.args.text.Substring(story.args.links[i].start, story.args.links[i].end - story.args.links[i].start);
+                        }
+                        <a href=@string.Format("http://instagram.com/{0}", user)>
+                            <img class="circular ui image userImage" src="~/Images/loader-large.gif" />
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+            break;
+      }
+  }
+
+    <div class="ui horizontal divider">
+        Old
+    </div>
+
+    <input type="hidden" id="lastUpdate" value="@Model.stories[0].args.timestamp" />
+}

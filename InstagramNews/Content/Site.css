@@ -1,0 +1,8 @@
+﻿body {
+    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    background: #FCFCFC;
+    padding-bottom: 20px;
+    color: #555555;
+    text-rendering: optimizeLegibility;
+    min-width: 320px;
+}
